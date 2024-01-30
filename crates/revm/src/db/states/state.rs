@@ -264,7 +264,7 @@ impl<DB: Database> Database for State<DB> {
                 .transpose()?
                 .unwrap_or_default())
         } else {
-            unreachable!("For accessing any storage account is guaranteed to be loaded beforehand")
+            self.database.storage(address, index)
         }
     }
 
