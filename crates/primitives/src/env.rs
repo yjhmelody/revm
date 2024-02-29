@@ -40,8 +40,12 @@ impl Env {
     #[inline]
     pub fn effective_gas_price(&self) -> U256 {
         if let Some(priority_fee) = self.tx.gas_priority_fee {
+            #[cfg(feature = "std")]
+            println!("effective_gas_price 1: {}, {}", self.tx.gas_price, self.block.basefee + priority_fee);
             min(self.tx.gas_price, self.block.basefee + priority_fee)
         } else {
+            #[cfg(feature = "std")]
+            println!("effective_gas_price 2: {}", self.tx.gas_price);
             self.tx.gas_price
         }
     }
