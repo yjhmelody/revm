@@ -216,12 +216,10 @@ pub fn reward_beneficiary<SPEC: Spec, EXT, DB: Database>(
 ) -> Result<(), EVMError<DB::Error>> {
     let is_deposit = context.evm.env.tx.optimism.source_hash.is_some();
 
-    // transfer fee to coinbase/beneficiary.
     if !is_deposit {
+        // transfer fee to coinbase/beneficiary.
         mainnet::reward_beneficiary::<SPEC, EXT, DB>(context, gas)?;
-    }
 
-    if !is_deposit {
         // If the transaction is not a deposit transaction, fees are paid out
         // to both the Base Fee Vault as well as the L1 Fee Vault.
         let Some(l1_block_info) = context.evm.l1_block_info.clone() else {
@@ -262,14 +260,14 @@ pub fn reward_beneficiary<SPEC: Spec, EXT, DB: Database>(
             ));
         };
         base_fee_vault_account.mark_touch();
-        println!("base_fee_vault_account balance: before: {}", base_fee_vault_account.info.balance);
+        println!("base_fee_vault_account balance: before: {:?}", base_fee_vault_account.info.balance);
         base_fee_vault_account.info.balance += context
             .evm
             .env
             .block
             .basefee
             .mul(U256::from(gas.spend() - gas.refunded() as u64));
-        println!("base_fee_vault_account balance: after: {}", base_fee_vault_account.info.balance);
+        println!("base_fee_vault_account balance: after: {:?}", base_fee_vault_account.info.balance);
     }
     Ok(())
 }
