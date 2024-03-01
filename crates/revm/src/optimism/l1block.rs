@@ -145,6 +145,8 @@ impl L1BlockInfo {
             return U256::ZERO;
         }
 
+        println!("L1BlockInfo: {:#?}", self);
+
         if spec_id.is_enabled_in(SpecId::ECOTONE) {
             self.calculate_tx_l1_cost_ecotone(input, spec_id)
         } else {

@@ -235,6 +235,7 @@ pub fn reward_beneficiary<SPEC: Spec, EXT, DB: Database>(
         };
 
         let l1_cost = l1_block_info.calculate_tx_l1_cost(enveloped_tx, SPEC::SPEC_ID);
+        println!("SPEC_ID: {:?}", SPEC::SPEC_ID);
 
         // Send the L1 cost of the transaction to the L1 Fee Vault.
         let Ok((l1_fee_vault_account, _)) = context
