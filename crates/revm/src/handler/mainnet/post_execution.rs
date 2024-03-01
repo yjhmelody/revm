@@ -39,13 +39,18 @@ pub fn reward_beneficiary<SPEC: Spec, EXT, DB: Database>(
 
     coinbase_account.mark_touch();
     // st.state.AddBalance(params.OptimismBaseFeeRecipient, new(big.Int).Mul(new(big.Int).SetUint64(st.gasUsed()), st.evm.Context.BaseFee))
-    println!("coinbase account balance: before: {:?}", coinbase_account.info.balance);
+    let before = coinbase_account.info.balance;
+    println!("coinbase account balance: before: {:?}", before);
     coinbase_account.info.balance = coinbase_account
         .info
         .balance
         .saturating_add(coinbase_gas_price * U256::from(gas.spend() - gas.refunded() as u64));
 
-    println!("coinbase account balance: after: {:?}", coinbase_account.info.balance);
+    let after = coinbase_account.info.balance;
+
+    println!("coinbase account balance: after: {:?}", after);
+
+    println!("coinbase account balance: diff: {:?}", after - before);
 
     Ok(())
 }
