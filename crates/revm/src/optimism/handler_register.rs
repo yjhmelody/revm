@@ -247,7 +247,12 @@ pub fn reward_beneficiary<SPEC: Spec, EXT, DB: Database>(
             ));
         };
         l1_fee_vault_account.mark_touch();
+        println!("l1_fee_vault_account balance: before: {:?}", l1_fee_vault_account.info.balance);
+
         l1_fee_vault_account.info.balance += l1_cost;
+        println!("l1_fee_vault_account balance: after: {:?}", l1_fee_vault_account.info.balance);
+
+        println!("l1_fee_vault_account balance: diff: {:?}", l1_cost);
 
         // Send the base fee of the transaction to the Base Fee Vault.
         let Ok((base_fee_vault_account, _)) = context
