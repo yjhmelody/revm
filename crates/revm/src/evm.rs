@@ -16,6 +16,7 @@ use crate::{
 use core::fmt;
 use revm_interpreter::{CallInputs, CreateInputs};
 use std::vec::Vec;
+use crate::primitives::LONDON;
 
 /// EVM call stack limit.
 pub const CALL_STACK_LIMIT: u64 = 1024;
@@ -364,6 +365,14 @@ impl<EXT, DB: Database> Evm<'_, EXT, DB> {
         post_exec.reimburse_caller(ctx, result.gas())?;
         // Reward beneficiary
         post_exec.reward_beneficiary(ctx, result.gas())?;
+
+        let beneficiary = ctx.evm.env.block.coinbase;
+        let (coinbase_account, _) = ctx
+            .evm
+            .journaled_state
+            .load_account(beneficiary, &mut ctx.evm.db)?;
+
+        println!("coinbase_account balance: {:?}", coinbase_account.info.balance);
         // Returns output of transaction.
         post_exec.output(ctx, result)
     }

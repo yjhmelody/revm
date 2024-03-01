@@ -312,6 +312,13 @@ pub fn end<SPEC: Spec, EXT, DB: Database>(
             // normal transaction.
             let caller = context.evm.env().tx.caller;
 
+            let beneficiary = context.evm.env.block.coinbase;
+            let (coinbase_account, _) = context
+                .evm
+                .journaled_state
+                .load_account(beneficiary, &mut context.evm.db)?;
+
+            println!("coinbase_account2 balance: {:?}", coinbase_account.info.balance);
             // Increment sender nonce and account balance for the mint amount. Deposits
             // always persist the mint amount, even if the transaction fails.
             let account = {

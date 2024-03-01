@@ -50,6 +50,7 @@ pub fn reward_beneficiary<SPEC: Spec, EXT, DB: Database>(
 
     println!("coinbase account balance: after: {:?}", after);
 
+    // The values are all right
     println!("coinbase account balance: diff: {:?}", after - before);
 
     Ok(())
