@@ -262,12 +262,14 @@ pub fn reward_beneficiary<SPEC: Spec, EXT, DB: Database>(
             ));
         };
         base_fee_vault_account.mark_touch();
+        println!("base_fee_vault_account balance: before: {}", base_fee_vault_account.info.balance);
         base_fee_vault_account.info.balance += context
             .evm
             .env
             .block
             .basefee
             .mul(U256::from(gas.spend() - gas.refunded() as u64));
+        println!("base_fee_vault_account balance: after: {}", base_fee_vault_account.info.balance);
     }
     Ok(())
 }
