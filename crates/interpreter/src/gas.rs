@@ -68,6 +68,7 @@ impl Gas {
     /// Erases a gas cost from the totals.
     #[inline]
     pub fn erase_cost(&mut self, returned: u64) {
+        println!("erase_cost: returned {returned}, {:#?}", self);
         self.used -= returned;
         self.all_used_gas -= returned;
     }
@@ -101,6 +102,7 @@ impl Gas {
     /// Returns `false` if the gas limit is exceeded.
     #[inline(always)]
     pub fn record_cost(&mut self, cost: u64) -> bool {
+        println!("record_cost: cost {cost}, {:#?}", self);
         let all_used_gas = self.all_used_gas.saturating_add(cost);
         if self.limit < all_used_gas {
             return false;
@@ -116,6 +118,7 @@ impl Gas {
     /// Used in [`resize_memory!`](crate::resize_memory).
     #[inline]
     pub fn record_memory(&mut self, gas_memory: u64) -> bool {
+        println!("record_memory: gas_memory {gas_memory}, {:#?}", self);
         if gas_memory > self.memory {
             let all_used_gas = self.used.saturating_add(gas_memory);
             if self.limit < all_used_gas {
