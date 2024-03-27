@@ -155,8 +155,8 @@ pub fn sstore<H: Host, SPEC: Spec>(interpreter: &mut Interpreter, host: &mut H) 
 
     pop!(interpreter, index, value);
     let Some(SStoreResult {
-        original_value: mut original,
-        present_value: mut old,
+        original_value: original,
+        present_value: old,
         new_value: new,
         is_cold,
     }) = host.sstore(interpreter.contract.address, index, value)
@@ -164,13 +164,6 @@ pub fn sstore<H: Host, SPEC: Spec>(interpreter: &mut Interpreter, host: &mut H) 
         interpreter.instruction_result = InstructionResult::FatalExternalError;
         return;
     };
-
-    if original == U256::from(10) {
-        original = U256::ZERO
-    }
-    if old == U256::from(10) {
-        old = U256::ZERO
-    }
     gas_or_fail!(interpreter, {
         let remaining_gas = interpreter.gas.remaining();
         gas::sstore_cost::<SPEC>(original, old, new, remaining_gas, is_cold)
