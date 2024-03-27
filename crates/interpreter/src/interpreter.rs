@@ -231,6 +231,8 @@ impl Interpreter {
                 let refunded = call_outcome.gas().refunded();
                 self.gas.erase_cost(remaining);
                 self.gas.record_refund(refunded);
+                println!("insert_call_outcome refunded: {}", refunded);
+                println!("insert_call_outcome remaining: {}", remaining);
                 shared_memory.set(out_offset, &self.return_data_buffer[..target_len]);
                 push!(self, U256::from(1));
             }

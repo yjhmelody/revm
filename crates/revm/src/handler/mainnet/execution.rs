@@ -31,6 +31,8 @@ pub fn frame_return_with_refund_flag<SPEC: Spec>(
         return_ok!() => {
             gas.erase_cost(remaining);
             gas.record_refund(refunded);
+            println!("frame_return_with_refund_flag refunded: {}", refunded);
+            println!("frame_return_with_refund_flag remaining: {}", remaining);
         }
         return_revert!() => {
             gas.erase_cost(remaining);

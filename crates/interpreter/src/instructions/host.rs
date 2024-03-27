@@ -164,6 +164,7 @@ pub fn sstore<H: Host, SPEC: Spec>(interpreter: &mut Interpreter, host: &mut H) 
         let remaining_gas = interpreter.gas.remaining();
         gas::sstore_cost::<SPEC>(original, old, new, remaining_gas, is_cold)
     });
+    println!("sstore refund: {}", gas::sstore_refund::<SPEC>(original, old, new));
     refund!(interpreter, gas::sstore_refund::<SPEC>(original, old, new));
 }
 
@@ -234,6 +235,7 @@ pub fn selfdestruct<H: Host, SPEC: Spec>(interpreter: &mut Interpreter, host: &m
 
     // EIP-3529: Reduction in refunds
     if !SPEC::enabled(LONDON) && !res.previously_destroyed {
+        println!("selfdestruct refund: {}", gas::SELFDESTRUCT);
         refund!(interpreter, gas::SELFDESTRUCT)
     }
     gas!(interpreter, gas::selfdestruct_cost::<SPEC>(res));
