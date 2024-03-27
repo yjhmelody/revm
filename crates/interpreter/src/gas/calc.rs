@@ -5,7 +5,7 @@ use std::vec::Vec;
 
 #[allow(clippy::collapsible_else_if)]
 pub fn sstore_refund<SPEC: Spec>(original: U256, current: U256, new: U256) -> i64 {
-    println!("SPEC: {:?} {} {}", SPEC::SPEC_ID, SPEC::enabled(ISTANBUL), SPEC::enabled(LONDON));
+    println!("sstore_refund: {} {} {}", original, current, new);
     if SPEC::enabled(ISTANBUL) {
         // EIP-3529: Reduction in refunds
         let sstore_clears_schedule = if SPEC::enabled(LONDON) {
