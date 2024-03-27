@@ -105,6 +105,8 @@ pub fn last_frame_return<SPEC: Spec, EXT, DB: Database>(
                 // Regolith, gas is reported as normal.
                 gas.erase_cost(remaining);
                 gas.record_refund(refunded);
+                println!("last_frame_return refunded: {}", refunded);
+                println!("last_frame_return remaining: {}", remaining);
             } else if is_deposit && tx_system.unwrap_or(false) {
                 // System transactions were a special type of deposit transaction in
                 // the Bedrock hardfork that did not incur any gas costs.
