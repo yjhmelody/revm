@@ -79,6 +79,7 @@ impl Gas {
     /// at the end of transact.
     #[inline]
     pub fn record_refund(&mut self, refund: i64) {
+        println!("record_refund: refund {refund}, {:#?}", self);
         self.refunded += refund;
     }
 
@@ -90,6 +91,7 @@ impl Gas {
     pub fn set_final_refund<SPEC: Spec>(&mut self) {
         let max_refund_quotient = if SPEC::enabled(LONDON) { 5 } else { 2 };
         self.refunded = (self.refunded() as u64).min(self.spend() / max_refund_quotient) as i64;
+        println!("set_final_refund: {:#?}", self);
     }
 
     /// Set a refund value
@@ -102,6 +104,20 @@ impl Gas {
     /// Returns `false` if the gas limit is exceeded.
     #[inline(always)]
     pub fn record_cost(&mut self, cost: u64) -> bool {
+        // record_cost: cost 22100, Gas {
+        //     limit: 100000,
+        //     all_used_gas: 5,
+        //     used: 5,
+        //     memory: 0,
+        //     refunded: 0,
+        // }
+        // record_cost: cost 2200, Gas {
+        //     limit: 100000,
+        //     all_used_gas: 22111,
+        //     used: 22111,
+        //     memory: 0,
+        //     refunded: 0,
+        // }
         println!("record_cost: cost {cost}, {:#?}", self);
         let all_used_gas = self.all_used_gas.saturating_add(cost);
         if self.limit < all_used_gas {
